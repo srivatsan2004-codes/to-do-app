@@ -15,11 +15,11 @@ import {
 } from "firebase/firestore";
 
 export default function App() {
-  // All hooks at the top
   const [user, setUser] = useState(undefined); // undefined = loading, null = not logged in, object = logged in
   const [taskInput, setTaskInput] = useState("");
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showProfile, setShowProfile] = useState(false); // <-- Added for profile tooltip
 
   // Listen for auth state changes
   useEffect(() => {
@@ -86,6 +86,9 @@ export default function App() {
     return <UserAuth onAuth={setUser} />;
   }
 
+  // Use displayName if available, otherwise use email, otherwise "Account"
+  const displayName = user?.displayName || user?.email || "Account";
+
   // Main To-Do App
   return (
     <div className="min-h-screen bg-white dark:bg-[#15202b] transition-colors duration-300">
@@ -100,6 +103,31 @@ export default function App() {
           >
             Logout
           </button>
+          {/* User Profile Icon (NEW) */}
+          <div
+            className="relative"
+            onMouseEnter={() => setShowProfile(true)}
+            onMouseLeave={() => setShowProfile(false)}
+          >
+            {user?.photoURL ? (
+              <img
+                src={user.photoURL}
+                alt="Profile"
+                className="w-8 h-8 rounded-full cursor-pointer"
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold cursor-pointer">
+                {displayName.charAt(0).toUpperCase()}
+              </div>
+            )}
+            {/* Tooltip */}
+            {showProfile && (
+              <div className="absolute right-0 top-full mt-2 p-2 bg-white dark:bg-[#192734] rounded shadow-lg text-sm z-10">
+                <p className="font-semibold">{displayName}</p>
+                <p className="text-gray-500 dark:text-gray-300">{user?.email}</p>
+              </div>
+            )}
+          </div>
         </div>
       </header>
       {/* Main content */}
