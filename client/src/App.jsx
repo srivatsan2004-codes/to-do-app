@@ -134,7 +134,7 @@ export default function App() {
       <main className="flex flex-col items-center mt-10">
         <div className="bg-gray-50 dark:bg-[#192734] rounded-xl shadow-lg max-w-md w-full p-8">
           <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-6 text-center">
-            Clean & Modern To-Do
+            Jobs🥀🥀🥀
           </h2>
           <form onSubmit={addTask} className="flex gap-3 mb-6">
             <input
