@@ -159,7 +159,7 @@ export default function App() {
               </li>
             ) : tasks.length === 0 ? (
               <li className="py-20 text-center text-gray-400 italic select-none">
-                No tasks yet. Add your first one!
+                Damn how are you so jobless?
               </li>
             ) : (
               tasks.map(({ id, text, completed }) => (
