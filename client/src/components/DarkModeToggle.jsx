@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DarkModeToggle() {
   const [dark, setDark] = useState(() => {
@@ -6,13 +6,25 @@ export default function DarkModeToggle() {
       const stored = localStorage.getItem("theme");
       if (stored === "dark") return true;
       if (stored === "light") return false;
+      // Fallback to system preference
       return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
     return false;
   });
 
+  // Optional: Listen for system theme changes if user hasn't chosen
   useEffect(() => {
-    const root = window.document.documentElement; // <html>
+    const stored = localStorage.getItem("theme");
+    if (stored) return; // User has set a preference
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e) => setDark(e.matches);
+    media.addEventListener("change", handler);
+    return () => media.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
     if (dark) {
       root.classList.add("dark");
       localStorage.setItem("theme", "dark");
